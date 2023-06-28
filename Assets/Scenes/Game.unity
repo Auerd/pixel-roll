@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 36.74
-    OrthographicSize: 1.8
+    OrthographicSize: 2
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -353,7 +353,7 @@ Camera:
   far clip plane: 5000
   field of view: 36.74
   orthographic: 1
-  orthographic size: 1.8
+  orthographic size: 2
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -470,9 +470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97079594f4104ed41942e3fb9f0743d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallsGenerator:
-    brick: {fileID: 1145190832, guid: 1d126e336877335418bad725817c7ed1, type: 3}
-    gameWindow: {fileID: 770242840}
 --- !u!4 &1593106296
 Transform:
   m_ObjectHideFlags: 0

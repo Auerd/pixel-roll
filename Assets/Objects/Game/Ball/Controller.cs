@@ -14,7 +14,7 @@ namespace Ball
         {
             rb = GetComponent<Rigidbody2D>();
         }
-        void Update()
+        void FixedUpdate()
         {
             force = new Vector2(GetAxisRaw("Horizontal") * speed, 0);
             rb.AddForce(force);
