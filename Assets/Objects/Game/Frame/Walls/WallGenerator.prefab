@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 18901804805502161}
   - component: {fileID: 18901804805501999}
   - component: {fileID: 18901804805502160}
+  - component: {fileID: 3393414492399080859}
   m_Layer: 5
   m_Name: WallGenerator
   m_TagString: Untagged
@@ -76,5 +77,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de2fa5cd9f32db43926642d805d045c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brick: {fileID: 6762479244663263699, guid: 7c8f720f6086cd5499f28433537be55f, type: 3}
   canvas: {fileID: 0}
+  brick: {fileID: 2546899838573684942, guid: 7c8f720f6086cd5499f28433537be55f, type: 3}
+  right: 0
+--- !u!114 &3393414492399080859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18901804805502162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934a3937300abbe4ea821975f8f969ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 0, y: 1, z: 0}

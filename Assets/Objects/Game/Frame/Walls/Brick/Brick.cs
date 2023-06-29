@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Walls
+namespace Game.Walls
 {
 	[RequireComponent(typeof(BoxCollider2D))]
 	public class Brick : MonoBehaviour
