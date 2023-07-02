@@ -1,12 +1,16 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game
+namespace Game.Frame
 {
     public abstract class Generator : MonoBehaviour
     {
         [SerializeField] protected Canvas canvas;
-        protected Rect canvasRectTransform;
+        protected Rect canvasRect;
+        /// <summary>
+        /// Main pool of objects that you generate.
+        /// You should use mainPool.Get() instead of Instantiate() and 
+        /// mainPool.Return() instead of Destroy()
+        /// </summary>
         protected ObjectPool mainPool;
 
         protected void Awake()
@@ -16,7 +20,7 @@ namespace Game
 
         protected void Start()
         {
-            canvasRectTransform = canvas.GetComponent<RectTransform>().rect;
+            canvasRect = canvas.GetComponent<RectTransform>().rect;
         }
 
 
@@ -45,8 +49,18 @@ namespace Game
         {
             return dot.x >= 0
                 && dot.y >= 0
-                && dot.x <= canvasRectTransform.width
-                && dot.y <= canvasRectTransform.height;
+                && dot.x <= canvasRect.width
+                && dot.y <= canvasRect.height;
+        }
+
+        protected Vector3 GetCanvasSizeOf(BoxCollider2D collider)
+        {
+            return collider.size * collider.transform.localScale;
+        }
+
+        protected Vector3 GetCanvasSizeOf(CircleCollider2D collider)
+        {
+            return 2 * collider.radius * collider.transform.localScale;
         }
     }
 }

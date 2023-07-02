@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Game
 {
     public class ObjectPool 
     {
-        private readonly List<GameObject> pool;
-        private GameObject currObj;
+        readonly Stack<GameObject> pool;
+        GameObject currObj;
 
         public ObjectPool() 
         {
@@ -18,43 +16,39 @@ namespace Game
         public ObjectPool(params GameObject[] objects)
         {
             pool = new();
-            pool.AddRange(objects);
+            foreach(var obj in objects)
+                pool.Push(obj);
         }
 
-        private GameObject FindObject(GameObject go)
+        private GameObject FindObject()
         {
-            foreach (var obj in pool)
-            {
-                if (!obj.activeSelf)
-                {
-                    pool.Remove(obj);
-                    obj.SetActive(true);
-                    return obj;
-                }
-            }
-            return null;
+            if(pool.Count == 0)
+                return null;
+            return pool.Pop();
         }
 
         public GameObject Get(GameObject prefab)
         {
-            currObj = FindObject(prefab);
+            currObj = FindObject();
             if (currObj == null)
                 return Object.Instantiate(prefab);
+            currObj.SetActive(true);
             return currObj;
         }
 
-        public GameObject Get(GameObject prefab, in Vector2 pos, in Quaternion rot)
+        public GameObject Get(GameObject prefab, in Vector2 pos = default, in Quaternion rot = default)
         {
             currObj = Get(prefab);
             currObj.transform.SetLocalPositionAndRotation(pos, rot);
             return currObj;
         }
 
-        public GameObject Get(GameObject prefab, Transform parent, in Vector2 pos = new(), in Quaternion rot = new())
+        public GameObject Get(GameObject prefab, Transform parent, in Vector2 pos = default, in Quaternion rot = default)
         {
-            currObj = FindObject(prefab);
+            currObj = FindObject();
             if(currObj == null)
                 currObj = Object.Instantiate(prefab, parent);
+            currObj.SetActive(true);
             currObj.transform.SetLocalPositionAndRotation(pos, rot);
             return currObj;
         }
@@ -62,7 +56,7 @@ namespace Game
         public void Return(GameObject obj)
         {
             obj.SetActive(false);
-            pool.Add(obj);
+            pool.Push(obj);
         }
     }
 }

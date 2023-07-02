@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using static UnityEngine.Debug;
 
-namespace Game.Walls
+namespace Game.Frame.Walls
 {
 	public sealed class WallGenerator : Generator
 	{
@@ -14,41 +13,52 @@ namespace Game.Walls
         private new void Awake()
         {
 			base.Awake();
-			CreateBrick(Vector2.zero);
+            wall.Add(CreateBrick(Vector2.zero));
         }
 
         private new void Start() 
 		{
-			base.Start();
-            canvasBrickSize = wall[^1].GetComponent<BoxCollider2D>().size * wall[^1].transform.localScale;
+            base.Start();
+            canvasBrickSize = GetCanvasSizeOf(wall[^1].GetComponent<BoxCollider2D>());
             if (right)
-                wall[^1].transform.localPosition -= new Vector3(canvasBrickSize.y, 0, 0); // Moves to left
+                wall[^1].transform.localPosition -= new Vector3(canvasBrickSize.x, 0); // Moves to left
         }
 
         private void Update() 
 		{
-			GameObject lastBrick = wall[0];
+            CreateNewBrick();
+            RemoveOldBrick();
+        }
+
+		private void CreateNewBrick()
+		{
             Vector2 newBrickPosition = new
-			(
-				0, wall[^1].transform.localPosition.y - canvasBrickSize.x
-			);
+            (
+                0, wall[^1].transform.localPosition.y - canvasBrickSize.y
+            );
 
-			if (right)
-				newBrickPosition.x -= canvasBrickSize.y;
+            if (right)
+                newBrickPosition.x -= canvasBrickSize.x;
 
-			if (IsDotInCanvas(-newBrickPosition))
-				CreateBrick(newBrickPosition);
-			if (0 < lastBrick.transform.localPosition.y-canvasBrickSize.x)
-			{
+            if (-newBrickPosition.y<canvasRect.height)
+                wall.Add(CreateBrick(newBrickPosition));
+        }
+
+        private void RemoveOldBrick()
+        {
+            GameObject lastBrick = wall[0];
+            if (lastBrick.transform.localPosition.y - canvasBrickSize.y > 0)
+            {
                 RemoveBrick(lastBrick);
                 wall.RemoveAt(0);
-			}
-		}
+            }
+        }
 
-		private void CreateBrick(in Vector2 newBrickPosition)=>
-			wall.Add(mainPool.Get(brick, transform, newBrickPosition, Quaternion.Euler(0, 0, -90)));
-		
-		private void RemoveBrick(GameObject brick)=>
-			mainPool.Return(brick);
+        private GameObject CreateBrick(in Vector2 newBrickPosition)=>
+			mainPool.Get(brick, transform, newBrickPosition, Quaternion.identity);
+
+        private void RemoveBrick(GameObject brick) =>
+            mainPool.Return(brick);
+        
 	}
 }

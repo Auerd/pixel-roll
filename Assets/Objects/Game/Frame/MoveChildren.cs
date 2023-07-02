@@ -1,17 +1,22 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Game
+namespace Game.Frame
 {
     public class MoveChildren : MonoBehaviour
     {
-        [SerializeField] private Vector3 direction;
+        [HideInInspector]
+        public Vector3 speed;
+
+        private void Update()
+        {
+            speed = GameManager.Speed;
+        }
 
         private void FixedUpdate()
         {
             foreach (Transform child in transform)
             {
-                child.transform.position += direction*Time.fixedDeltaTime;
+                child.transform.position += speed*Time.fixedDeltaTime;
             }
         }
     }
