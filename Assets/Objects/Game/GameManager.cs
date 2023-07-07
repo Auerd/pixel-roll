@@ -1,20 +1,17 @@
-﻿using UnityEngine;
+﻿using Game.Frame.BonusSystem;
+using UnityEngine;
 
 namespace Game
 {
-    public class GameManager : MonoBehaviour
+    public sealed class GameManager : MonoBehaviour
     {
-        [SerializeField]
-        [Range(0f, 1f)]
-        private float firstSpeed;
-        [Range(0f, .5f)] 
-        [SerializeField] 
-        private float acceleration;
-        [SerializeField]
-        private Skin skin;
-
+        [Range(0f, 1f)] [SerializeField] float firstSpeed;
+        [Range(0f, 5f)] [SerializeField] float acceleration;
+        [Min(1)] [SerializeField] int targetFrameRate = 60;
+        [SerializeField] Skin skin;
+        [SerializeField] GameObject deathScreen;
+        
         public static Vector3 Speed { get; private set; }
-        public Skin Skin { get { return skin; } }
 
         #region Singleton
 
@@ -26,6 +23,8 @@ namespace Game
         private void Awake()
         {
             Instance = this;
+            Application.targetFrameRate = targetFrameRate + 1;
+            deathScreen.SetActive(false);
         }
 
         private void Start()
@@ -53,9 +52,11 @@ namespace Game
             #endregion
             #region Moving Objects At Scene
 
-            Speed += new Vector3(0, Instance.acceleration * .01f);
+            Speed += new Vector3(0, Instance.acceleration * .0001f);
 
             #endregion
         }
+
+        public void YouLose() => deathScreen.SetActive(true);
     }
 }

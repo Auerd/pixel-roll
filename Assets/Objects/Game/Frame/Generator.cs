@@ -21,6 +21,7 @@ namespace Game.Frame
         protected void Start()
         {
             canvasRect = canvas.GetComponent<RectTransform>().rect;
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
 
 

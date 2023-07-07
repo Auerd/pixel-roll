@@ -1,44 +1,57 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Debug;
 
 namespace Game.Frame.Platforms
 {
 	public sealed class PlatformGenerator : Generator
 	{
 		[SerializeField]
-		private GameObject platform, spikes, ball, brick;
-		[SerializeField]
-		[Range(0, 4)]
-		private int min;
-		[SerializeField]
-		[Range (-4, 1)]
-		private int max;
+		private GameObject platform, ballInstance, brick;
 
-		private readonly List<GameObject> platforms = new();
-		private float maxHeightBetweenPlatforms, minHeightBetweenPlatforms;
+		[SerializeField]
+		[Range(1, 4)]
+		private uint maxPlatformsOnLevel;
+
+		[System.Serializable]
+		private struct SpaceBetweenPlatforms
+		{
+            [Range(0, 4)]
+            public int min;
+            [Range(0f, 1f)]
+            public float max;
+        }
+        [SerializeField] private SpaceBetweenPlatforms spaceBetweenPlatforms;
+
+        private readonly List<GameObject> platforms = new();
+		private float maxSpaceBetweenPlatforms, minSpaceBetweenPlatforms;
 		private Vector2 platformCanvasSize, brickCanvasSize, ballCanvasSize;
+		private float[,] occupedPos;
 
 		private new void Awake()
 		{
 			base.Awake();
+			occupedPos = new float[maxPlatformsOnLevel, 2];
 			brickCanvasSize = GetCanvasSizeOf(brick.GetComponent<BoxCollider2D>());
 			platformCanvasSize = GetCanvasSizeOf(platform.GetComponent<BoxCollider2D>());
-			ballCanvasSize = GetCanvasSizeOf(ball.GetComponent<CircleCollider2D>());
+			ballCanvasSize = GetCanvasSizeOf(ballInstance.GetComponent<CircleCollider2D>());
 		}
 
 		private new void Start()
 		{
 			base.Start();
+			ballInstance.transform.parent = transform;
 			CreateFirstPlatform();
 
-            minHeightBetweenPlatforms =
-                ballCanvasSize.y * (1 + min)
+            minSpaceBetweenPlatforms =
+                ballCanvasSize.y * (1 + spaceBetweenPlatforms.min)
                 + platformCanvasSize.y * 1.1f;
 
-            maxHeightBetweenPlatforms =
-                canvasRect.height
-                + ballCanvasSize.y * (max - 1);
+			maxSpaceBetweenPlatforms =
+				canvasRect.height * (spaceBetweenPlatforms.max);
+
+			if (maxSpaceBetweenPlatforms <  minSpaceBetweenPlatforms)
+				maxSpaceBetweenPlatforms = minSpaceBetweenPlatforms;
+
         }
 
 		private void Update()
@@ -50,14 +63,22 @@ namespace Game.Frame.Platforms
 		private void CreateNewPlatform()
 		{
 			Vector2 lastPlatformPos = platforms[^1].transform.localPosition;
-			Vector2 newPlatformPos = new
-			(
-				RandomPlatformPointX,
-				lastPlatformPos.y - Random.Range(minHeightBetweenPlatforms, maxHeightBetweenPlatforms)
-			);
+            Vector2 newPlatformPos = new()
+            {
+                y = lastPlatformPos.y - Random.Range(minSpaceBetweenPlatforms, maxSpaceBetweenPlatforms)
+            };
 
-            if (lastPlatformPos.y > 0)
-				platforms.Add(CreatePlatform(newPlatformPos));
+
+			for (int i = 0; i < maxPlatformsOnLevel; i++)
+			{
+				newPlatformPos.x = RandomPlatformPointX;
+				if (lastPlatformPos.y > 0) 
+				{
+					platforms.Add(CreatePlatform(newPlatformPos));
+					occupedPos[i, 0] = newPlatformPos.x;
+					occupedPos[i, 1] = newPlatformPos.x + platformCanvasSize.x;
+                }	
+			}
 		}
 
 		private void RemoveOldPlatform()
@@ -68,7 +89,6 @@ namespace Game.Frame.Platforms
 				mainPool.Return(lastBrick);
 				platforms.RemoveAt(0);
 			}
-
 		}
 
 		private void CreateFirstPlatform()
@@ -81,7 +101,7 @@ namespace Game.Frame.Platforms
 			platforms.Add(CreatePlatform(firstPlatformPos));
 
 			Vector2 ballPos = firstPlatformPos + new Vector2(platformCanvasSize.x / 2, platformCanvasSize.y);
-			Instantiate(ball, transform).transform.localPosition = ballPos;
+			ballInstance.transform.localPosition = ballPos;
 		}
 
 		private GameObject CreatePlatform(Vector2 position) =>

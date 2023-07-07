@@ -1,6 +1,4 @@
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using static UnityEngine.Input;
 using static UnityEngine.Time;
 
@@ -12,12 +10,12 @@ namespace Game.Ball
         private enum TypeOfMoving
         {
             Force,
-            Impulse,
             Retro,
         }
         [SerializeField] private TypeOfMoving typeOfMoving;
+
         [SerializeField] private float acceleration = 0.5f;
-        [SerializeField] private UnityEvent OnSpikeCollision;
+        [SerializeField] private new Camera camera;
         private Rigidbody2D rb;
 
         #region Singleton
@@ -32,7 +30,6 @@ namespace Game.Ball
 
         #endregion
 
-
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -40,15 +37,25 @@ namespace Game.Ball
 
         void FixedUpdate()
         {
-            Vector2 force = new(GetAxisRaw("Horizontal") * acceleration * fixedDeltaTime, 0);
+            Vector2 force;
+#if UNITY_STANDALONE
+            force = new(GetAxisRaw("Horizontal") * acceleration * fixedDeltaTime, 0);
+#elif UNITY_ANDROID || UNITY_IOS
+            if (touchCount > 0)
+            {
+                force = new(acceleration * fixedDeltaTime, 0);
+                if (GetTouch(0).position.x <= camera.pixelWidth / 2)
+                    force = -force;
+            }
+            else
+                force = Vector2.zero; 
+#endif
             switch (typeOfMoving)
             {
                 case TypeOfMoving.Force:
                     rb.AddForce(force * 100); break;
-                case TypeOfMoving.Impulse:
-                    rb.AddForce(force * 10, ForceMode2D.Impulse); break;
                 default:
-                    rb.MovePosition(rb.position + force * .4f); break; 
+                    rb.MovePosition(rb.position + force); break; 
             }
         }
     }
