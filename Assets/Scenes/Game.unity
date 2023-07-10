@@ -253,10 +253,9 @@ MonoBehaviour:
   platform: {fileID: 8250871295454719103, guid: 1d126e336877335418bad725817c7ed1, type: 3}
   ballInstance: {fileID: 838274046}
   brick: {fileID: 8115836103495825148, guid: f4d3c4de180b2ea40b0d811f542a26ae, type: 3}
-  maxPlatformsOnLevel: 1
   spaceBetweenPlatforms:
     min: 0
-    max: 0.508
+    max: 0.65
 --- !u!114 &116026647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c354d4fadc200d40bb518dce11098c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSpeed: 1
+  firstSpeed: 0.595
   acceleration: 0.5
   targetFrameRate: 60
   skin: {fileID: 0}

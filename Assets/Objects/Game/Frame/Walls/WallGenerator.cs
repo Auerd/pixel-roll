@@ -47,7 +47,7 @@ namespace Game.Frame.Walls
         private void RemoveOldBrick()
         {
             GameObject lastBrick = wall[0];
-            if (lastBrick.transform.localPosition.y - canvasBrickSize.y > 0)
+            if (lastBrick.transform.localPosition.y > canvasBrickSize.y)
             {
                 RemoveBrick(lastBrick);
                 wall.RemoveAt(0);

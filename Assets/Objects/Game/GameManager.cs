@@ -5,9 +5,9 @@ namespace Game
 {
     public sealed class GameManager : MonoBehaviour
     {
-        [Range(0f, 1f)] [SerializeField] float firstSpeed;
-        [Range(0f, 5f)] [SerializeField] float acceleration;
-        [Min(1)] [SerializeField] int targetFrameRate = 60;
+        [SerializeField, Range(0f, 1f)] float firstSpeed;
+        [SerializeField, Range(0f, 5f)] float acceleration;
+        [SerializeField, Min(1)] int targetFrameRate = 60;
         [SerializeField] Skin skin;
         [SerializeField] GameObject deathScreen;
         
