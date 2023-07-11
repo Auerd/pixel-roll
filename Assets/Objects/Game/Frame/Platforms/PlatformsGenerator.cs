@@ -19,8 +19,9 @@ namespace Game.Frame.Platforms
 			[Range(0f, 1.5f)]
 			[Tooltip("Maximum Y offset from the main platform")]
 			public float maxRange;
+			[Tooltip("Minimum X space between platforms")]
 			[Range(0f, 1.5f)]
-			public float minSpaceBetweenPlatforms;
+			public float minSpace;
 		}
 		[SerializeField] private LevelSettings levelSettings;
 
@@ -61,11 +62,11 @@ namespace Game.Frame.Platforms
             maxX = canvasRect.width - platformCanvasSize.x - brickCanvasSize.x;
 
 			maxOffsetRange = platformCanvasSize.y * levelSettings.maxRange;
+			minSpaceBetweenPlatforms = levelSettings.minSpace * ballCanvasSize.x;
 			if (levelSettings.adaptive)
-				maxPlatformsOnLevel = (uint)Mathf.Floor(canvasRect.width / 2 / platformCanvasSize.x);
+				maxPlatformsOnLevel = (uint)Mathf.Floor(canvasRect.width / (platformCanvasSize.x + minSpaceBetweenPlatforms));
 			else
 				maxPlatformsOnLevel = levelSettings.maxPlatformsOnLevel;
-			minSpaceBetweenPlatforms = levelSettings.minSpaceBetweenPlatforms * ballCanvasSize.x;
         }
 
 		private new void Start()

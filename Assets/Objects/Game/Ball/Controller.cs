@@ -7,32 +7,38 @@ namespace Game.Ball
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class Controller : MonoBehaviour
     {
+        [SerializeField] private TypeOfMoving typeOfMoving;
+        [SerializeField] private float acceleration = 0.5f;
+        [SerializeField] private new Camera camera;
+        [SerializeField] private Event OnSpikeCollision;
+
         private enum TypeOfMoving
         {
             Force,
             Retro,
         }
-        [SerializeField] private TypeOfMoving typeOfMoving;
 
-        [SerializeField] private float acceleration = 0.5f;
-        [SerializeField] private new Camera camera;
         private Rigidbody2D rb;
+        private bool dead;
+
 
         #region Singleton
 
         private Controller () { }
         public static Controller Instance { get; private set; }
 
+        #endregion
+
         private void Awake()
         {
             Instance = this;
+            OnSpikeCollision.Subscribe(StopAll);
+            rb = GetComponent<Rigidbody2D>();
         }
-
-        #endregion
 
         void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
+
         }
 
         void FixedUpdate()
@@ -50,13 +56,23 @@ namespace Game.Ball
             else
                 force = Vector2.zero; 
 #endif
-            switch (typeOfMoving)
+            if (!dead)
             {
-                case TypeOfMoving.Force:
-                    rb.AddForce(force * 100); break;
-                default:
-                    rb.MovePosition(rb.position + force); break; 
+                switch (typeOfMoving)
+                {
+                    case TypeOfMoving.Force:
+                        rb.AddForce(force * 100); break;
+                    default:
+                        rb.MovePosition(rb.position + force); break;
+                }
             }
+        }
+
+        private void StopAll()
+        {
+            dead = true;
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
         }
     }
 }

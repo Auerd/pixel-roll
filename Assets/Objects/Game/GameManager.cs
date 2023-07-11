@@ -35,7 +35,7 @@ namespace Game
             Cursor.visible = false;
 
             #endregion
-            #region Moving Objects At Scene
+            #region Moving Objects At The Scene
 
             Speed = new Vector3(0, Instance.firstSpeed);
 
@@ -50,9 +50,9 @@ namespace Game
                 Application.Quit();
 
             #endregion
-            #region Moving Objects At Scene
+            #region Moving Objects At The Scene
 
-            Speed += new Vector3(0, Instance.acceleration * .0001f);
+            Speed += new Vector3(0, Instance.acceleration * 1E-4f);
 
             #endregion
         }
