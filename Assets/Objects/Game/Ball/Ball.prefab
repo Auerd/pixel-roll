@@ -9,11 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2952555171189846310}
-  - component: {fileID: 4970081415179236786}
+  - component: {fileID: 838274059}
   - component: {fileID: 803300324}
   - component: {fileID: 6276896568087604491}
   - component: {fileID: 3841804636860803961}
   - component: {fileID: 6226675883007373877}
+  - component: {fileID: 838274053}
+  - component: {fileID: 4970081415179236786}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -30,13 +32,13 @@ Transform:
   m_GameObject: {fileID: 6226675883007373834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -28, y: -116, z: 0.9993799}
-  m_LocalScale: {x: 135, y: 135, z: 1}
+  m_LocalScale: {x: 270, y: 270, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4970081415179236786
+--- !u!114 &838274059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,12 +47,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6226675883007373834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc5408e21823eae43b46a9c862a3caad, type: 3}
+  m_Script: {fileID: 11500000, guid: cd3bf5946a4a02c4094d7cab7ba76e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onSpikeCollision:
-    m_PersistentCalls:
-      m_Calls: []
+  trigger: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
+  settings:
+    cycles: 1
+    stateLength: 0
+    states:
+    - {fileID: 2100000, guid: 6f7553738510bcd459bcc9aa979c8f25, type: 2}
+    - {fileID: 2100000, guid: a12f2898881d19d49ae079e7a5ccee64, type: 2}
+    - {fileID: 2100000, guid: b9b42adc46a35904a9e8a3c295522fdc, type: 2}
+    - {fileID: 2100000, guid: 5ad5a613dc299b84b901921b2c8d73ae, type: 2}
+    - {fileID: 2100000, guid: 0a05a00a3ab7f7e49bd5b905cdd51c22, type: 2}
 --- !u!114 &803300324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,8 +73,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfMoving: 0
-  acceleration: 8.03
+  acceleration: 4.58
   camera: {fileID: 0}
+  OnSpikeCollision: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
 --- !u!50 &6276896568087604491
 Rigidbody2D:
   serializedVersion: 4
@@ -78,14 +88,14 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1.44
+  m_Mass: 0.54
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.44
-  m_Material: {fileID: 6200000, guid: 565a2db2a13db4245a3184c04b2bf5a1, type: 2}
+  m_GravityScale: 0.78
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &3841804636860803961
 CircleCollider2D:
@@ -144,14 +154,39 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 59
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1791056906, guid: 5a2513255113c01428c9eb57c2593873, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5625, y: 0.5}
+  m_Size: {x: 0.5, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &838274053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6226675883007373834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 232f015d38f96be4bbd36b7c2c7848fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4970081415179236786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6226675883007373834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5408e21823eae43b46a9c862a3caad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSpikeCollision: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
