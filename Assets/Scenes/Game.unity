@@ -254,13 +254,13 @@ MonoBehaviour:
   ballInstance: {fileID: 838274046}
   brick: {fileID: 8115836103495825148, guid: f4d3c4de180b2ea40b0d811f542a26ae, type: 3}
   levelSettings:
-    maxPlatformsOnLevel: 2
+    maxPlatformsOnLevel: 0
     adaptive: 1
-    maxRange: 1
+    maxRange: 0.082
     minSpace: 1
   heightBetweenPlatforms:
     min: 1
-    max: 0.653
+    max: 0.694
 --- !u!114 &116026647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,18 +667,6 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 2130226537}
-    - target: {fileID: 803300324, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
-      propertyPath: acceleration
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 838274059, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
-      propertyPath: animtionEnded
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 838274059, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
-      propertyPath: settings.stateLength
-      value: 0.41
-      objectReference: {fileID: 0}
     - target: {fileID: 2952555171189846310, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -726,6 +714,14 @@ PrefabInstance:
     - target: {fileID: 6226675883007373834, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
       propertyPath: m_Name
       value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276896568087604491, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6276896568087604491, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}
+      propertyPath: m_GravityScale
+      value: 0.55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4ecefdc9f31884429fedecaab59d55e, type: 3}

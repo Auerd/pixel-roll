@@ -5,8 +5,10 @@ namespace Game.Frame.Platforms
 {
 	public sealed class PlatformsGenerator : Generator
 	{
+        #region Input
+
         [SerializeField]
-		private GameObject platform, ballInstance, brick;
+		private GameObject platform, ballInstance, brick = null;
 
 		[System.Serializable] private struct LevelSettings
 		{
@@ -34,14 +36,19 @@ namespace Game.Frame.Platforms
 		}
 		[SerializeField] private HeightBetweenPlatforms heightBetweenPlatforms;
 
-		private readonly List<GameObject> platforms = new();
+        #endregion
+        #region Private variables
+
+        private readonly List<GameObject> platforms = new();
 		private float maxY, minY, minX, maxX;
 		private uint maxPlatformsOnLevel;
 		private float maxOffsetRange, minSpaceBetweenPlatforms;
 		private Vector2 platformCanvasSize, brickCanvasSize, ballCanvasSize;
 
+        #endregion
 
-		private new void Awake()
+
+        private new void Awake()
 		{
 			base.Awake();
 			brickCanvasSize = GetCanvasSizeOf(brick.GetComponent<BoxCollider2D>());
@@ -49,7 +56,20 @@ namespace Game.Frame.Platforms
 			ballCanvasSize = GetCanvasSizeOf(ballInstance.GetComponent<CircleCollider2D>());
 		}
 
-		private void DefineAllVariables()
+		private new void Start()
+		{
+			base.Start();
+			CulcVariables();
+			CreateFirstPlatform();
+        }
+
+		private void Update()
+		{
+			CreateNewPlatforms();
+			RemoveOldPlatforms();
+		}
+
+		private void CulcVariables()
 		{
             minY =
                 ballCanvasSize.y * heightBetweenPlatforms.min
@@ -68,19 +88,6 @@ namespace Game.Frame.Platforms
 			else
 				maxPlatformsOnLevel = levelSettings.maxPlatformsOnLevel;
         }
-
-		private new void Start()
-		{
-			base.Start();
-			DefineAllVariables();
-			CreateFirstPlatform();
-        }
-
-		private void Update()
-		{
-			CreateNewPlatforms();
-			RemoveOldPlatforms();
-		}
 
 		private void CreateNewPlatforms()
 		{
