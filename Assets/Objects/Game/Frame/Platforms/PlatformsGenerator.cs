@@ -5,27 +5,10 @@ namespace Game.Frame.Platforms
 {
 	public sealed class PlatformsGenerator : Generator
 	{
-        #region Input
+		#region Input
 
-        [SerializeField]
+		[SerializeField]
 		private GameObject platform, ballInstance, brick = null;
-
-		[System.Serializable] private struct LevelSettings
-		{
-			[Min(1)]
-			public uint maxPlatformsOnLevel;
-
-			[Tooltip("If adaptive is turned on, MaxPlatformsOnLevel value will be calculated automaticly")]
-			public bool adaptive;
-
-			[Range(0f, 1.5f)]
-			[Tooltip("Maximum Y offset from the main platform")]
-			public float maxRange;
-			[Tooltip("Minimum X space between platforms")]
-			[Range(0f, 1.5f)]
-			public float minSpace;
-		}
-		[SerializeField] private LevelSettings levelSettings;
 
         [System.Serializable] private struct HeightBetweenPlatforms
 		{
@@ -41,8 +24,6 @@ namespace Game.Frame.Platforms
 
         private readonly List<GameObject> platforms = new();
 		private float maxY, minY, minX, maxX;
-		private uint maxPlatformsOnLevel;
-		private float maxOffsetRange, minSpaceBetweenPlatforms;
 		private Vector2 platformCanvasSize, brickCanvasSize, ballCanvasSize;
 
         #endregion
