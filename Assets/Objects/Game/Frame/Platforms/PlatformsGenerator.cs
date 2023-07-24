@@ -80,13 +80,6 @@ namespace Game.Frame.Platforms
 
             minX = brickCanvasSize.x;
             maxX = canvasRect.width - platformCanvasSize.x - brickCanvasSize.x;
-
-			maxOffsetRange = platformCanvasSize.y * levelSettings.maxRange;
-			minSpaceBetweenPlatforms = levelSettings.minSpace * ballCanvasSize.x;
-			if (levelSettings.adaptive)
-				maxPlatformsOnLevel = (uint)Mathf.Floor(canvasRect.width / (platformCanvasSize.x + minSpaceBetweenPlatforms));
-			else
-				maxPlatformsOnLevel = levelSettings.maxPlatformsOnLevel;
         }
 
 		private void CreateNewPlatforms()
@@ -95,41 +88,13 @@ namespace Game.Frame.Platforms
 
             if (lastPlatformPos.y > 0)
             {
-				Vector2 newPlatformPos = new()
-				{
-					y = lastPlatformPos.y - Random.Range(minY, maxY)
-				};
+				Vector2 newPlatformPos = new
+				(
+					Random.Range(brickCanvasSize.x, canvasRect.width - brickCanvasSize.x - platformCanvasSize.x),
+					lastPlatformPos.y - Random.Range(minY, maxY)
+				);
 
-				var platformsOnLevel = new float[maxPlatformsOnLevel];
-
-				for (int i = 0; i < maxPlatformsOnLevel; i++)
-				{
-					newPlatformPos.x = Random.Range(minX, maxX);
-
-					foreach (var platformPosX in platformsOnLevel)
-					{
-						float leftCornerNewPlat = newPlatformPos.x;
-						float rightCornerNewPlat = newPlatformPos.x + platformCanvasSize.x;
-						float leftCornerCurrPlat = platformPosX;
-						float rightCornerCurrPlat = platformPosX + platformCanvasSize.x;
-
-                        bool doPlatformsIntersect =
-                               leftCornerCurrPlat >= leftCornerNewPlat - minSpaceBetweenPlatforms
-							&& leftCornerCurrPlat <= rightCornerNewPlat + minSpaceBetweenPlatforms
-
-							|| rightCornerCurrPlat >= leftCornerNewPlat - minSpaceBetweenPlatforms
-                            && rightCornerCurrPlat <= rightCornerNewPlat + minSpaceBetweenPlatforms;
-
-						if (doPlatformsIntersect)
-							return;
-					}
-
-					if(i != 0)
-						newPlatformPos.y += Random.Range(-maxOffsetRange, maxOffsetRange);
-
-					platforms.Add(CreatePlatform(newPlatformPos));
-					platformsOnLevel[i] = newPlatformPos.x;
-				}
+				platforms.Add(CreatePlatform(newPlatformPos));				
 			}
 		}
 
