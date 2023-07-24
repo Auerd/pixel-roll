@@ -5,13 +5,22 @@ namespace Game.GameManagement
 {
     public sealed class GameManager : MonoBehaviour
     {
+        #region Input
+
         [SerializeField, Range(0f, 1f)] float speed = 1;
         [SerializeField, Range(0f, 5f)] float acceleration = 1;
         [SerializeField, Min(1)] uint targetFrameRate, healthPoints;
-        [SerializeField] GameObject deathscreen, healthbar, scorebar = null;
-        [SerializeField] Event spikeCollision, bonusCollision, death = null;
         [SerializeField] Skin skin = null;
-        
+        [Space]
+        [Header("UI")]
+        [SerializeField] GameObject deathscreen; 
+        [SerializeField] GameObject healthbar, scorebar = null;
+        [Space]
+        [Header("Events")]
+        [SerializeField] Event death;
+        [SerializeField] Event bonusCollision;
+
+        #endregion
         #region Singleton
 
         private GameManager() { }
@@ -21,7 +30,7 @@ namespace Game.GameManagement
         
         public static uint HealthPoints { get { return instance.healthPoints; } }
         public static Skin Skin { get { return instance.skin; } }
-          public static Vector3 Speed 
+        public static Vector3 Speed 
         { 
             get { return new(0, instance.speed); } 
         }
@@ -32,7 +41,7 @@ namespace Game.GameManagement
             instance = this;
             Application.targetFrameRate = (int)targetFrameRate + 1;
             deathscreen.SetActive(false);
-            spikeCollision.Subscribe(OnSpikeCollide);
+            death.Subscribe(Death);
         }
 
         private void Update()
@@ -40,11 +49,11 @@ namespace Game.GameManagement
             speed += acceleration * 1E-4f;
         }
 
-        public void OnSpikeCollide()
+        public void Death()
         {
             healthPoints--;
 #if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
+            //EditorApplication.isPlaying = false;
 #endif
         }
     }

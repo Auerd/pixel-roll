@@ -253,14 +253,9 @@ MonoBehaviour:
   platform: {fileID: 8250871295454719103, guid: 1d126e336877335418bad725817c7ed1, type: 3}
   ballInstance: {fileID: 838274046}
   brick: {fileID: 8115836103495825148, guid: f4d3c4de180b2ea40b0d811f542a26ae, type: 3}
-  levelSettings:
-    maxPlatformsOnLevel: 0
-    adaptive: 1
-    maxRange: 0.082
-    minSpace: 1
   heightBetweenPlatforms:
     min: 1
-    max: 0.694
+    max: 0.651
 --- !u!114 &116026647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,13 +370,12 @@ MonoBehaviour:
   acceleration: 2.52
   targetFrameRate: 60
   healthPoints: 1
+  skin: {fileID: 0}
   deathscreen: {fileID: 1082844300}
   healthbar: {fileID: 0}
   scorebar: {fileID: 0}
-  spikeCollision: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
+  death: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
   bonusCollision: {fileID: 0}
-  death: {fileID: 0}
-  skin: {fileID: 0}
 --- !u!4 &568486035
 Transform:
   m_ObjectHideFlags: 0
