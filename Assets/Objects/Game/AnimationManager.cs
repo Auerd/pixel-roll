@@ -5,12 +5,12 @@ namespace Game
 {
     public class AnimationManager : MonoBehaviour
     {
-        [SerializeField] Event trigger, animtionEnded = null;
+        [SerializeField] Event trigger, animationEnded = null;
         [SerializeField] AnimationSettings settings;
         [System.Serializable] private struct AnimationSettings
         {
             [Min(1)] public uint cycles;
-            public float stateLength;
+            public float cycleLength;
             public Material[] states;
         }
 
@@ -18,14 +18,16 @@ namespace Game
         private new Renderer renderer;
         private AnimationManager[] thisObjectManagers;
         private Coroutine coroutine;
+        private float pause;
 
 
         private void Awake()
         {
             renderer = GetComponent<Renderer>();
             trigger.Subscribe(Animate);
-            settings.stateLength = Mathf.Abs(settings.stateLength);
+            settings.cycleLength = Mathf.Abs(settings.cycleLength);
             thisObjectManagers = GetComponents<AnimationManager>();
+            pause = settings.cycleLength / settings.states.Length;
         }
 
         private void Animate()
@@ -47,12 +49,12 @@ namespace Game
         private IEnumerator AnimateCoroutine()
         {
             isAnimating = true;
-            for(uint cycle = 0; cycle < settings.cycles; cycle++)
+            for (uint cycle = 0; cycle < settings.cycles; cycle++)
             {
                 foreach(Material state in settings.states)
                 {
                     renderer.material = state;
-                    yield return new WaitForSeconds(settings.stateLength);
+                    yield return new WaitForSeconds(pause);
                 }
             }
             isAnimating = false;

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6276896568087604491}
   - component: {fileID: 3841804636860803961}
   - component: {fileID: 6226675883007373877}
+  - component: {fileID: 3757986819128366446}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -154,3 +155,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3757986819128366446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6226675883007373834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3bf5946a4a02c4094d7cab7ba76e69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: {fileID: 11400000, guid: 166e013801723e347a1b57a896513526, type: 2}
+  animationEnded: {fileID: 0}
+  settings:
+    cycles: 1
+    cycleLength: 1
+    states:
+    - {fileID: 2100000, guid: 6f7553738510bcd459bcc9aa979c8f25, type: 2}
+    - {fileID: 2100000, guid: a12f2898881d19d49ae079e7a5ccee64, type: 2}
+    - {fileID: 2100000, guid: b9b42adc46a35904a9e8a3c295522fdc, type: 2}
+    - {fileID: 2100000, guid: 5ad5a613dc299b84b901921b2c8d73ae, type: 2}
+    - {fileID: 2100000, guid: 0a05a00a3ab7f7e49bd5b905cdd51c22, type: 2}

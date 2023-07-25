@@ -14,6 +14,5 @@ namespace Game.Ball
             if (collision.gameObject.CompareTag("Enemy") && onSpikeCollision != null)
                 onSpikeCollision.Raise();
         }
-
     }
 }
