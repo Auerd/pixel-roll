@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.GameManagement
 {
@@ -7,18 +6,18 @@ namespace Game.GameManagement
     {
         #region Input
 
-        [SerializeField, Range(0f, 1f)] float speed = 1;
+        [SerializeField, Range(0f, 1f)] float initialSpeed = 1;
         [SerializeField, Range(0f, 5f)] float acceleration = 1;
         [SerializeField, Min(1)] uint targetFrameRate, healthPoints;
         [SerializeField] Skin skin = null;
         [Space]
         [Header("UI")]
-        [SerializeField] GameObject deathscreen; 
-        [SerializeField] GameObject healthbar, scorebar = null;
+        [SerializeField] Canvas canvas; 
+        [SerializeField] GameObject healthbar, scorebar, deathscreen;
         [Space]
         [Header("Events")]
-        [SerializeField] Event death;
-        [SerializeField] Event bonusCollision;
+        [SerializeField] Event spikeDeath;
+        [SerializeField] Event fallDeath, bonusCollision;
 
         #endregion
         #region Singleton
@@ -28,20 +27,20 @@ namespace Game.GameManagement
 
         #endregion
         
-        public static uint HealthPoints { get { return instance.healthPoints; } }
-        public static Skin Skin { get { return instance.skin; } }
-        public static Vector3 Speed 
-        { 
-            get { return new(0, instance.speed); } 
-        }
+        public static uint HealthPoints { get => instance.healthPoints; }
+        public static Skin Skin { get => instance.skin; }
+        public static Vector3 Speed { get => new(0, instance.speed); }
+        public static Canvas Canvas { get => instance.canvas; }
 
+        private float speed;
 
         private void Awake()
         {
             instance = this;
+            speed = initialSpeed;
             Application.targetFrameRate = (int)targetFrameRate + 1;
             deathscreen.SetActive(false);
-            death.Subscribe(Death);
+            spikeDeath.Subscribe(deathFromSpikes);
         }
 
         private void Update()
@@ -49,7 +48,7 @@ namespace Game.GameManagement
             speed += acceleration * 1E-4f;
         }
 
-        public void Death()
+        public void deathFromSpikes()
         {
             healthPoints--;
 #if UNITY_EDITOR

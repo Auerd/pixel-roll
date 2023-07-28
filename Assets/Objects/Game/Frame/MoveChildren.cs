@@ -4,10 +4,6 @@ namespace Game.Frame
 {
     public class MoveChildren : MonoBehaviour
     {
-        private void Update()
-        {
-        }
-
         private void FixedUpdate()
         {
             foreach (Transform child in transform)

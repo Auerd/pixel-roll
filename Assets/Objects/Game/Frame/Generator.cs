@@ -14,11 +14,17 @@ namespace Game.Frame
         /// </summary>
         protected ObjectPool mainPool;
 
+        /// <summary>
+        /// Use base.Awake() in Awake function
+        /// </summary>
         protected void Awake()
         {
             mainPool = new();
         }
 
+        /// <summary>
+        /// Use base.Start() in Start() function
+        /// </summary>
         protected void Start()
         {
             canvasRect = canvas.GetComponent<RectTransform>().rect;
