@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Game.Frame.BonusSystem;
+using Game.Frame.Platforms;
+using UnityEngine;
 
 namespace Game.GameManagement
 {
@@ -16,8 +18,7 @@ namespace Game.GameManagement
         [SerializeField] GameObject healthbar, scorebar, deathscreen;
         [Space]
         [Header("Events")]
-        [SerializeField] Event spikeDeath;
-        [SerializeField] Event fallDeath, bonusCollision;
+        [SerializeField] BonusPickUpEvent bonusCollision;
 
         #endregion
         #region Singleton
@@ -36,11 +37,15 @@ namespace Game.GameManagement
 
         private void Awake()
         {
+#if UNITY_EDITOR
+            if (instance != null)
+                Debug.LogWarning("There are more than one GameManager in the scene");
+#endif
             instance = this;
+
             speed = initialSpeed;
             Application.targetFrameRate = (int)targetFrameRate + 1;
             deathscreen.SetActive(false);
-            spikeDeath.Subscribe(deathFromSpikes);
         }
 
         private void Update()
@@ -48,12 +53,9 @@ namespace Game.GameManagement
             speed += acceleration * 1E-4f;
         }
 
-        public void deathFromSpikes()
+        public void Death()
         {
-            healthPoints--;
-#if UNITY_EDITOR
-            //EditorApplication.isPlaying = false;
-#endif
+            --healthPoints;
         }
     }
 }

@@ -1,15 +1,17 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Ball
 {
     public class OutOfTheWindow : MonoBehaviour
     {
-        [SerializeField] Event @event;
+        [SerializeField] UnityEvent exitWindow;
         [SerializeField] Canvas canvas;
 
         private Rect canvasRect;
         private new CircleCollider2D collider;
         private Vector2 mainCanvasSize;
+        private bool lastState;
 
         private void Start()
         {
@@ -20,11 +22,15 @@ namespace Game.Ball
 
         private void Update()
         {
-            if (IsBallOutOfTheWindow)
-                @event.Raise();
+            if (lastState != IsInTheWindow)
+            {
+                if (!IsInTheWindow && exitWindow != null)
+                    exitWindow.Invoke();
+                lastState = IsInTheWindow;
+            }
         }
 
-        private bool IsBallOutOfTheWindow
+        private bool IsInTheWindow
         {
             get
             {
@@ -32,10 +38,10 @@ namespace Game.Ball
                 x = transform.localPosition.x;
                 y = transform.localPosition.y;
 
-                return x < -mainCanvasSize.x
-                    || x > canvasRect.width + mainCanvasSize.x
-                    || y < -mainCanvasSize.y
-                    || y > canvasRect.height + mainCanvasSize.y;
+                return x > -mainCanvasSize.x
+                    && x < canvasRect.width + mainCanvasSize.x
+                    && y > -mainCanvasSize.y
+                    && y < canvasRect.height + mainCanvasSize.y;
             }
         }
     }

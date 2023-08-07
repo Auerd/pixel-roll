@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05f1805da1fbba04ba540b213356f1cf, type: 3}
-  m_Name: DeathFromFall
+  m_Name: FallDeath
   m_EditorClassIdentifier: 

@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Ball
 {
     public sealed class SpikesCollider : MonoBehaviour
     {
-        [SerializeField] Event onSpikeCollision;
+        [SerializeField] UnityEvent onSpikeCollision;
 
         public bool IsAnimationRunning {get; private set;}
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.CompareTag("Enemy") && onSpikeCollision != null)
-                onSpikeCollision.Raise();
+                onSpikeCollision.Invoke();
         }
     }
 }

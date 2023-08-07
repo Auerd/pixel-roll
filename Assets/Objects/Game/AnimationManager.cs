@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game
 {
     public class AnimationManager : MonoBehaviour
     {
-        [SerializeField] Event trigger, animationEnded = null;
+        [SerializeField] UnityEvent animationEnded;
         [SerializeField] AnimationSettings settings;
         [System.Serializable] private struct AnimationSettings
         {
@@ -13,6 +14,7 @@ namespace Game
             public float cycleLength;
             public Material[] states;
         }
+        [SerializeField, TextArea(1, 5)] string description;
 
         private bool isAnimating;
         private new Renderer renderer;
@@ -24,13 +26,12 @@ namespace Game
         private void Awake()
         {
             renderer = GetComponent<Renderer>();
-            trigger.Subscribe(Animate);
             settings.cycleLength = Mathf.Abs(settings.cycleLength);
             thisObjectManagers = GetComponents<AnimationManager>();
             pause = settings.cycleLength / settings.states.Length;
         }
 
-        private void Animate()
+        public void Animate()
         {
             if (!isAnimating)
             {
@@ -58,6 +59,7 @@ namespace Game
                 }
             }
             isAnimating = false;
+            animationEnded?.Invoke();
         }
     }
 }

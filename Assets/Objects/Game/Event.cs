@@ -8,7 +8,7 @@ namespace Game
         public delegate void OnEvent();
         private event OnEvent CurrEvent;
         public void Raise()=>
-            CurrEvent.Invoke();
+            CurrEvent?.Invoke();
 
         public void Subscribe(OnEvent method)=>
             CurrEvent += method;

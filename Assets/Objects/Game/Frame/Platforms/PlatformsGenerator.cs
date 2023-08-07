@@ -1,5 +1,8 @@
+using Game.Ball;
+using Game.GameManagement;
 using System.Collections.Generic;
 using UnityEngine;
+using static Game.GameManagement.GameManager;
 
 namespace Game.Frame.Platforms
 {
@@ -25,9 +28,16 @@ namespace Game.Frame.Platforms
         private readonly List<GameObject> platforms = new();
 		private float maxY, minY, minX, maxX;
 		private Vector2 platformCanvasSize, brickCanvasSize, ballCanvasSize;
+		private GameObject reservedPlatform;
 
         #endregion
 
+		public static bool NeedToCreateBall { private get; set; }
+
+		public void RespawnBall()
+		{
+			NeedToCreateBall = true;
+		}
 
         private new void Awake()
 		{
@@ -67,15 +77,23 @@ namespace Game.Frame.Platforms
 		{
 			Vector2 lastPlatformPos = platforms[^1].transform.localPosition;
 
-            if (lastPlatformPos.y > 0)
-            {
+			if (lastPlatformPos.y > 0)
+			{
 				Vector2 newPlatformPos = new
 				(
 					Random.Range(brickCanvasSize.x, canvasRect.width - brickCanvasSize.x - platformCanvasSize.x),
 					lastPlatformPos.y - Random.Range(minY, maxY)
 				);
 
-				platforms.Add(CreatePlatform(newPlatformPos));				
+				platforms.Add(CreatePlatform(newPlatformPos));
+
+
+				if (NeedToCreateBall)
+				{
+					SetBallOnPlatformWithPos(lastPlatformPos);
+					ballInstance.SetActive(true);
+					NeedToCreateBall = false;
+				}
 			}
 		}
 
@@ -98,12 +116,15 @@ namespace Game.Frame.Platforms
 			);
 			platforms.Add(CreatePlatform(firstPlatformPos));
 
-			Vector2 ballPos = firstPlatformPos + new Vector2(platformCanvasSize.x / 2, platformCanvasSize.y);
             ballInstance.transform.parent = transform;
-            ballInstance.transform.localPosition = ballPos;
+			SetBallOnPlatformWithPos(firstPlatformPos);
 		}
 
 		private GameObject CreatePlatform(Vector2 position) =>
 			mainPool.Get(platform, transform, position);
+
+		private void SetBallOnPlatformWithPos(Vector2 pos) =>
+            ballInstance.transform.localPosition = 
+			pos + new Vector2(platformCanvasSize.x / 2, platformCanvasSize.y);
     }
 }

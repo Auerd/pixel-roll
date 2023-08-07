@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Input;
 using static UnityEngine.Time;
@@ -9,7 +10,6 @@ namespace Game.Ball
     {
         [SerializeField] float acceleration = 0.5f;
         [SerializeField] new Camera camera;
-        [SerializeField] Event OnSpikeCollision;
         [SerializeField] Canvas canvas;
 
         private Rigidbody2D rb;
@@ -26,9 +26,15 @@ namespace Game.Ball
         private void Awake()
         {
             Instance = this;
-            OnSpikeCollision.Subscribe(StopAll);
             rb = GetComponent<Rigidbody2D>();
             dead = false;
+        }
+
+        public void Revive()
+        {
+            dead = false;
+            rb.velocity = Vector3.zero;
+            rb.isKinematic = false;
         }
 
         void FixedUpdate()
@@ -57,12 +63,11 @@ namespace Game.Ball
             }
         }
 
-        private void StopAll()
+        public void StopAll()
         {
             dead = true;
             rb.velocity = -GameManagement.GameManager.Speed;
             rb.isKinematic = true;
-            rb.gravityScale = 0;
         }
     }
 }
